@@ -1,0 +1,23 @@
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-title">
+            <h2 class="title">Add Role</h2>
+            <button class="close-button" (click)="close()">×</button>
+        </div>
+        <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label class="form-label">Title <span> *</span></label>
+                <input type="text" id="title" name="title" formControlName="title" class="form-input w-full rounded"
+                    placeholder="Enter role title" required
+                    [ngClass]="{'border-red-500': roleForm.get('title')?.invalid && roleForm.get('title')?.touched}">
+                <div *ngIf="roleForm.get('title')?.touched">
+                    <small class="error-text" *ngIf="roleForm.get('title')?.errors?.['required']">Role title
+                        is required</small>
+                    <small class="error-text" *ngIf="roleForm.get('title')?.errors?.['minlength']">Role title must be at
+                        least 2 characters long</small>
+                </div>
+            </div>
+            <button type="submit" [disabled]="roleForm.invalid" class="submit-btn">Add</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,120 @@
+<div class="container">
+    <h2 class="title">User Management</h2>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+        <div class="filter-group">
+            <label>Full Name</label>
+            <input type="text" [(ngModel)]="filters.fullName" (ngModelChange)="applyFilters()"
+                placeholder="Search by name..." class="filter-input">
+        </div>
+
+        <div class="filter-group">
+            <label>Email Address</label>
+            <input type="text" [(ngModel)]="filters.emailAddress" (ngModelChange)="applyFilters()"
+                placeholder="Search by email..." class="filter-input">
+        </div>
+
+        <div class="filter-group">
+            <label>Role</label>
+            <select [(ngModel)]="filters.role" (ngModelChange)="applyFilters()" class="filter-input">
+                <option value="">All Roles</option>
+                <option *ngFor="let role of availableRoles" [value]="role.title">
+                    {{role.title}}
+                </option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Class</label>
+            <select [(ngModel)]="filters.class" (ngModelChange)="applyFilters()" class="filter-input">
+                <option value="">All Classes</option>
+                <option *ngFor="let class of availableClasses" [value]="class.id">
+                    {{class.code}}
+                </option>
+            </select>
+        </div>
+
+        <button class="btn-clear" (click)="clearFilters()">
+            Clear Filters
+        </button>
+        <button class="btn-register" (click)="registerUser()">Register User</button>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="number-column">#</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Roles</th>
+                    <th>Class</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of paginatedUsers; let i = index">
+                    <td class="number-column">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                    <td class="name" (click)="viewUser(user)">{{ user.fullName }}</td>
+                    <td>{{ user.emailAddress }}</td>
+                    <td>{{ user.mobileNumber }}</td>
+                    <td>
+                        <div class="role-container">
+                            <span *ngFor="let role of user.roles" class="role-badge"
+                                [ngStyle]="{'color': getRoleColor(role)}">
+                                {{ role }}
+                            </span>
+                        </div>
+                    </td>
+                    <td>{{ getClassName(user) }}</td>
+                    <td>
+                        <button (click)="editUser(user)" [disabled]="!isAllowedToMakeEdit(user)"
+                            class="btn-edit">Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <div class="pagination-container">
+                            <!-- Show items range -->
+                            <span class="pagination-info">
+                                Showing {{ getStartItem() }} to {{ getEndItem() }} of {{ filteredUsers.length }} total
+                            </span>
+                            <button class="pagination-btn" (click)="changePage(currentPage - 1)"
+                                [disabled]="currentPage === 1">Previous</button>
+
+                            <span *ngFor="let page of getTotalPages()">
+                                <button class="pagination-btn" [class.active]="currentPage === page"
+                                    (click)="changePage(page)">
+                                    {{ page }}
+                                </button>
+                            </span>
+
+                            <button class="pagination-btn" (click)="changePage(currentPage + 1)"
+                                [disabled]="currentPage === totalPages">Next</button>
+
+                            <select class="pagination-select" (change)="changeItemsPerPage($event)">
+                                <option *ngFor="let option of itemsPerPageOptions" [value]="option"
+                                    [selected]="itemsPerPage === option">
+                                    {{ option }}
+                                </option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div *ngIf="showViewEditPopup">
+        <app-view-edit-user [isEdit]="isEditMode" [isAdmin]="isAdmin" [isfromUserProfile]="isfromUserProfile"
+            [user]="selectedUser" [availableRoles]="availableRoles" [availableClasses]="availableClasses"
+            [availableSubjects]="availableSubjects" [users]="users"
+            (popupForm)="closePopupForm()" (userSaved)="handleUserSaved($event)"></app-view-edit-user>
+    </div>
+    <div *ngIf="showRegisterPopup">
+        <app-register (popupForm)="closePopupForm()"></app-register>
+    </div>
+</div>

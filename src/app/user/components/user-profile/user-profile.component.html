@@ -1,0 +1,135 @@
+<!-- profile.component.html -->
+<div class="profile-card" *ngIf="user">
+    <div class="profile-header">
+        <img [src]="user.profilePictureUri || 'assets/profile-default-icon.png'" [alt]="user.fullName" class="avatar">
+    </div>
+
+    <div class="profile-content">
+        <!-- Personal Information -->
+        <div class="info-section">
+            <h3>Personal Information</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Full Name:</span>
+                    <span>{{ user.fullName }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Role(s):</span>
+                    <span class="role-badge" *ngFor="let role of user.roles">{{ role }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Email Address:</span>
+                    <span>{{ user.emailAddress }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Mobile Number:</span>
+                    <span>{{ user.mobileNumber }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Date Of Birth:</span>
+                    <span>{{ user.dateOfBirth }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Gender:</span>
+                    <span>{{ user.gender }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Age:</span>
+                    <span>{{ user.age }} years old</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Status -->
+        <div class="info-section">
+            <h3>Account Status</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Status:</span>
+                    <span class="badge" [class]="getStatusClass(user.isActive)">
+                        {{ user.isActive ? 'Active' : 'Inactive' }}
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Email Confirmed:</span>
+                    <span class="badge" [class]="getStatusClass(user.isConfirmedEmail)">
+                        {{ user.isConfirmedEmail ? 'Yes' : 'No' }}
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Password Changed:</span>
+                    <span class="badge" [class]="getStatusClass(user.isChangedPassword)">
+                        {{ user.isChangedPassword ? 'Yes' : 'No' }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Information -->
+        <div class="info-section" *ngIf="user.student && user.roles.includes('Student')">
+            <h3>Student Information</h3>
+            <div class="info-grid">
+                <div class="info-item" *ngIf="user.student.entranceYear">
+                    <span class="label">Entrance Year:</span>
+                    <span>{{ user.student.entranceYear }}</span>
+                </div>
+                <div class="info-item" *ngIf="user.student.estimatedExitYear">
+                    <span class="label">Estimated Exit Year:</span>
+                    <span>{{ user.student.estimatedExitYear }}</span>
+                </div>
+                <div class="info-item" *ngIf="user.student.realExitYear">
+                    <span class="label">Real Exit Year:</span>
+                    <span>{{ user.student.realExitYear }}</span>
+                </div>
+                <div class="info-item" *ngIf="user.student.classSubjects">
+                    <span class="label">Subjects:</span>
+                    <ng-container *ngFor="let course of user.student.classSubjects; let i = index; let last = last">
+                        {{ course.code }}<span *ngIf="!last">, </span>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teacher Information -->
+        <div class="info-section" *ngIf="user.teacher && user.roles.includes('Teacher')">
+            <h3>Teacher Information</h3>
+            <div class="info-grid">
+                <div class="info-item" *ngIf="user.teacher.serviceStatus">
+                    <span class="label">Service Status:</span>
+                    <span>{{ user.teacher.serviceStatus }}</span>
+                </div>
+                <div class="info-item" *ngIf="user.teacher.isAvailable">
+                    <span class="label">Availability:</span>
+                    <span>{{ user.teacher.isAvailable }}</span>
+                </div>
+                <div class="info-item" *ngIf="user.teacher.responsibilityType">
+                    <span class="label">Responsibility Type:</span>
+                    <span>{{ user.teacher.responsibilityType }}</span>
+                </div>
+                <div class="info-item" *ngIf="user.teacher.responsibilityFocus">
+                    <span class="label">Responsibility Focus:</span>
+                    <span>{{ user.teacher.responsibilityFocus }}</span>
+                </div>
+                <div class="info-item" *ngIf="user.teacher.classSubjects">
+                    <span class="label">Subjects:</span>
+                    <span *ngFor="let course of user.teacher.classSubjects ">
+                        {{ course.code }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <button (click)="editUser(user)" class="btn-edit">Edit</button>
+    </div>
+</div>
+
+<div class="profile-card empty-state" *ngIf="!user">
+    <p>No user data available</p>
+</div>
+
+<div *ngIf="showViewEditPopup">
+    <app-view-edit-user [isEdit]="isEditMode" [isAdmin]="isAdmin" [isfromUserProfile]="isfromUserProfile" [user]="user"
+        [availableRoles]="availableRoles" [availableClasses]="availableClasses" [availableSubjects]="availableSubjects"
+        [users]="" (popupForm)="closePopupForm()" (userSaved)="handleUserSaved($event)"></app-view-edit-user>
+</div>

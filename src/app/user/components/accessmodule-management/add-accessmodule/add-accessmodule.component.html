@@ -1,0 +1,38 @@
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-title">
+            <h2 class="title">Add Module</h2>
+            <button class="close-button" (click)="close()">×</button>
+        </div>
+        <form [formGroup]="accessModuleForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-group">
+                <label class="form-label">Name <span> *</span></label>
+                <input type="text" id="name" name="name" formControlName="name" class="form-input w-full rounded"
+                    placeholder="Enter module name" required
+                    [ngClass]="{'border-red-500': accessModuleForm.get('name')?.invalid && accessModuleForm.get('name')?.touched}">
+                <div *ngIf="accessModuleForm.get('name')?.touched">
+                    <small class="error-text" *ngIf="accessModuleForm.get('name')?.errors?.['required']">Module name
+                        is required</small>
+                    <small class="error-text" *ngIf="accessModuleForm.get('name')?.errors?.['minlength']">Module
+                        name must be at least 2 characters long</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="roles">Roles <span> *</span></label>
+                <div class="roles-container">
+                    <label *ngFor="let role of allRoles" class="checkbox-item">
+                        <div class="form-checkbox">
+                            <input type="checkbox" [checked]="isRoleSelected(role.id!)"
+                                (change)="onRoleChange(role.id!, $event)">
+                            <p>{{ role.title }}</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" [disabled]="accessModuleForm.invalid" class="submit-btn">Add</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+<div class="container">
+    <h2 class="title">Batch Management</h2>
+    <div>
+        <button class="btn-add" (click)="addBatch()">Add Batch</button>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="number-column">#</th>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>IsActive</th>
+                    <th>Teacher</th>
+                    <th>Class Category</th>
+                    <th>Class Stream</th>
+                    <th>Class Ranking</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let batch of allBatches; let i = index">
+                    <td class="number-column">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                    <td class="name" (click)="viewBatch(batch)">{{ batch.name }}</td>
+                    <td class="code">{{ batch.code }}</td>
+                    <td class="isActive">{{ batch.isActive }}</td>
+                    <td class="teacher">{{ loadTeacher(batch.teacherId) }}</td>
+                    <td>
+                        <div class="child-container">
+                            <ng-container *ngFor="let cc of batch.classCategories; let i = index; let last = last"
+                                class="role-badge">
+                                {{ cc.code }}<span *ngIf="!last">, </span>
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="child-container">
+                            <ng-container *ngFor="let cs of batch.classStreams; let i = index; let last = last"
+                                class="role-badge">
+                                {{ cs }}<span *ngIf="!last">, </span>
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="child-container">
+                            <ng-container *ngFor="let cr of batch.classRanks; let i = index; let last = last"
+                                class="role-badge">
+                                {{ cr }}<span *ngIf="!last">, </span>
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn-edit" (click)="editBatch(batch)">Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <div class="pagination-container">
+                            <!-- Show items range -->
+                            <span class="pagination-info">
+                                Showing {{ getStartItem() }} to {{ getEndItem() }} of {{ allBatches.length }}
+                                total
+                            </span>
+                            <button class="pagination-btn" (click)="changePage(currentPage - 1)"
+                                [disabled]="currentPage === 1">Previous</button>
+
+                            <span *ngFor="let page of getTotalPages()">
+                                <button class="pagination-btn" [class.active]="currentPage === page"
+                                    (click)="changePage(page)">
+                                    {{ page }}
+                                </button>
+                            </span>
+
+                            <button class="pagination-btn" (click)="changePage(currentPage + 1)"
+                                [disabled]="currentPage === totalPages">Next</button>
+
+                            <select class="pagination-select" (change)="changeItemsPerPage($event)">
+                                <option *ngFor="let option of itemsPerPageOptions" [value]="option"
+                                    [selected]="itemsPerPage === option">
+                                    {{ option }}
+                                </option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div *ngIf="showViewEditPopup">
+        <app-view-edit-batch [isEdit]="isEdit" [isAdmin]="isAdmin" [batch]="selectedBatch" [allBatches]="allBatches"
+            [allTeachers]="allTeachers" (popupForm)="closePopupForm()"></app-view-edit-batch>
+    </div>
+    <div *ngIf="showAddPopup">
+        <app-add-batch [isEdit]="isEdit" [allBatches]="allBatches" [allTeachers]="allTeachers"
+            (popupForm)="closePopupForm()"></app-add-batch>
+    </div>
+</div>

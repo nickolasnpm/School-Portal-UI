@@ -1,0 +1,56 @@
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-title">
+            <h2 class="title">Add Batch</h2>
+            <button class="close-button" (click)="close()">×</button>
+        </div>
+        <form [formGroup]="batchForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-group">
+                <label class="form-label">Name <span> *</span></label>
+                <input type="text" id="name" name="name" formControlName="name" class="form-input w-full rounded"
+                    placeholder="Enter batch name" required
+                    [ngClass]="{'border-red-500': batchForm.get('name')?.invalid && batchForm.get('name')?.touched}">
+                <div *ngIf="batchForm.get('name')?.touched">
+                    <small class="error-text" *ngIf="batchForm.get('name')?.errors?.['required']">Batch name
+                        is required</small>
+                    <small class="error-text" *ngIf="batchForm.get('name')?.errors?.['minlength']">Batch name must be at
+                        least 2 characters long</small>
+                    <small class="error-text" *ngIf="batchForm.get('name')?.errors?.['nameExist']">Batch name already
+                        exist</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Code <span> *</span></label>
+                <input type="text" id="code" name="code" formControlName="code" class="form-input w-full rounded"
+                    placeholder="Enter batch code" required
+                    [ngClass]="{'border-red-500': batchForm.get('code')?.invalid && batchForm.get('code')?.touched}">
+                <div *ngIf="batchForm.get('code')?.touched">
+                    <small class="error-text" *ngIf="batchForm.get('code')?.errors?.['required']">Batch code
+                        is required</small>
+                    <small class="error-text" *ngIf="batchForm.get('code')?.errors?.['minlength']">Batch code must be at
+                        least 2 characters long</small>
+                    <small class="error-text" *ngIf="batchForm.get('code')?.errors?.['codeExist']">Batch code already
+                        exist</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Teacher</label>
+                <select formControlName="teacherId" class="form-select w-full rounded">
+                    <option value="">Select Teacher</option>
+                    <option *ngFor="let user of allTeachers" [value]="user.teacher?.id">
+                        {{user.fullName}}
+                    </option>
+                </select>
+                <div *ngIf="batchForm.get('teacherId')?.touched">
+                    <small class="error-text" *ngIf="batchForm.get('teacherId')?.errors?.['required']">Responsible
+                        teacher is required</small>
+                </div>
+            </div>
+
+            <button type="submit" [disabled]="batchForm.invalid" class="submit-btn">Add</button>
+        </form>
+    </div>
+</div>

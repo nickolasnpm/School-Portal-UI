@@ -1,0 +1,45 @@
+<div class="form-container">
+    <div class="form-card">
+        <h2>Login</h2>
+        <form [formGroup]="loginform" (ngSubmit)="login()">
+            <div class="form-group">
+                <label class="form-label" for="emailAddress">Email Address<span> *</span></label>
+                <input type="text" id="emailAddress" name="emailAddress" formControlName="emailAddress"
+                    placeholder="Enter Email Address" required>
+                <div *ngIf="loginform.get('emailAddress')?.invalid && loginform.get('emailAddress')?.touched">
+                    <small class="error-text" *ngIf="loginform.get('emailAddress')?.errors?.['required']">Email is
+                        required.</small>
+                    <small class="error-text" *ngIf="loginform.get('emailAddress')?.errors?.['email']">Enter a valid
+                        email.</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="password">Password<span> *</span></label>
+                <div class="password-input-container">
+                    <input [type]="showPassword ? 'text' : 'password'" id="password" name="password"
+                        formControlName="password" placeholder="Enter password" required minlength="8" maxlength="16">
+                    <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+                        <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                    </button>
+                </div>
+                <div *ngIf="loginform.get('password')?.invalid && loginform.get('password')?.touched">
+                    <small class="error-text" *ngIf="loginform.get('password')?.errors?.['required']">
+                        Password is required.</small>
+                    <small class="error-text" *ngIf="loginform.get('password')?.errors?.['minlength']">
+                        Password must be at least 8 characters.</small>
+                    <small class="error-text" *ngIf="loginform.get('password')?.errors?.['maxlength']">
+                        Password should not more than 16 characters.</small>
+                    <small class="error-text" *ngIf="loginform.get('password')?.errors?.['passwordStrength'] && 
+                        !loginform.get('password')?.errors?.['required'] &&
+                        !loginform.get('password')?.errors?.['minlength'] &&
+                        !loginform.get('password')?.errors?.['maxlength']">
+                        Password must contain at least one uppercase letter, one lowercase letter, one number, and one
+                        special character (!&#64;#$%^&*,._).
+                    </small>
+                </div>
+            </div>
+            <button type="submit" [disabled]="loginform.invalid" class="submit-btn">Login</button>
+        </form>
+        <small (click)="resetPassword()" class="reset-password">Forgotten Password? Reset Here</small>
+    </div>
+</div>

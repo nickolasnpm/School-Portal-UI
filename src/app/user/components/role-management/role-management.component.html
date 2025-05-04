@@ -1,0 +1,74 @@
+<div class="container">
+    <h2 class="title">Role Management</h2>
+    <div>
+        <button class="btn-add" (click)="addRole()">Add Role</button>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="number-column">#</th>
+                    <th>Title</th>
+                    <th>Access Modules</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let role of allRoles; let i = index">
+                    <td class="number-column">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                    <td class="name" (click)="viewRole(role)">{{ role.title }}</td>
+                    <td>
+                        <div class="role-container">
+                            <ng-container *ngFor="let module of role.accessModules; let i = index; let last = last"
+                                class="role-badge">
+                                {{ module.name }}<span *ngIf="!last">, </span>
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn-edit" (click)="editRole(role)">Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <div class="pagination-container">
+                            <!-- Show items range -->
+                            <span class="pagination-info">
+                                Showing {{ getStartItem() }} to {{ getEndItem() }} of {{ allRoles.length }}
+                                total
+                            </span>
+                            <button class="pagination-btn" (click)="changePage(currentPage - 1)"
+                                [disabled]="currentPage === 1">Previous</button>
+
+                            <span *ngFor="let page of getTotalPages()">
+                                <button class="pagination-btn" [class.active]="currentPage === page"
+                                    (click)="changePage(page)">
+                                    {{ page }}
+                                </button>
+                            </span>
+
+                            <button class="pagination-btn" (click)="changePage(currentPage + 1)"
+                                [disabled]="currentPage === totalPages">Next</button>
+
+                            <select class="pagination-select" (change)="changeItemsPerPage($event)">
+                                <option *ngFor="let option of itemsPerPageOptions" [value]="option"
+                                    [selected]="itemsPerPage === option">
+                                    {{ option }}
+                                </option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div *ngIf="showViewEditPopup">
+        <app-view-edit-role [isEdit]="isEdit" [isAdmin]="isAdmin" [role]="selectedRole"
+            (popupForm)="closePopupForm()"></app-view-edit-role>
+    </div>
+    <div *ngIf="showAddPopup">
+        <app-add-role [isEdit]="isEdit" (popupForm)="closePopupForm()"></app-add-role>
+    </div>
+</div>

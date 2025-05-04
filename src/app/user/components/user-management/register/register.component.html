@@ -1,0 +1,211 @@
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-title">
+            <h2 class="title">User Registration</h2>
+            <button class="close-button" (click)="close()">×</button>
+        </div>
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+            <!-- Register For Role -->
+            <div class="form-group">
+                <label class="form-label">Register as : <span> *</span></label>
+                <div>
+                    <label *ngFor="let option of allRoles">
+                        <div class="form-radio">
+                            <input type="radio" formControlName="registerForRole" [value]="option.title">
+                            <p>{{option.title | titlecase}}</p>
+                        </div>
+                    </label>
+                </div>
+                <div class="error-text"
+                    *ngIf="registrationForm.get('registerForRole')?.touched && registrationForm.get('registerForRole')?.errors?.['required']">
+                    Please select a role
+                </div>
+            </div>
+
+            <!-- Basic Information -->
+            <div class="form-group">
+                <label class="form-label">Full Name <span> *</span></label>
+                <input type="text" id="fullName" name="fullName" formControlName="fullName"
+                    class="form-input w-full rounded" placeholder="Enter Full name" required
+                    [ngClass]="{'border-red-500': registrationForm.get('fullName')?.invalid && registrationForm.get('fullName')?.touched}">
+                <div *ngIf="registrationForm.get('fullName')?.touched">
+                    <small class="error-text" *ngIf="registrationForm.get('fullName')?.errors?.['required']">Full name
+                        is required</small>
+                    <small class="error-text" *ngIf="registrationForm.get('fullName')?.errors?.['minlength']">Name must
+                        be at least 2 characters long</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email Address <span> *</span></label>
+                <input type="email" id="emailAddress" name="emailAddress" formControlName="emailAddress"
+                    class="form-input w-full rounded" placeholder="Enter Email Address" required
+                    [ngClass]="{'border-red-500': registrationForm.get('emailAddress')?.invalid && registrationForm.get('emailAddress')?.touched}">
+                <div
+                    *ngIf="registrationForm.get('emailAddress')?.invalid && registrationForm.get('emailAddress')?.touched">
+                    <small class="error-text" *ngIf="registrationForm.get('emailAddress')?.errors?.['required']">Email
+                        is required.</small>
+                    <small class="error-text" *ngIf="registrationForm.get('emailAddress')?.errors?.['email']">Enter a
+                        valid email.</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Mobile Number <span> *</span></label>
+                <input type="tel" id="mobileNumber" name="mobileNumber" formControlName="mobileNumber"
+                    class="form-input w-full rounded" placeholder="Enter your mobile number" required pattern="[0-9]*"
+                    inputmode="numeric">
+                <div
+                    *ngIf="registrationForm.get('mobileNumber')?.invalid && registrationForm.get('mobileNumber')?.touched">
+                    <small class="error-text" *ngIf="registrationForm.get('mobileNumber')?.errors?.['required']">Mobile
+                        Number is required.</small>
+                    <small class="error-text" *ngIf="registrationForm.get('mobileNumber')?.errors?.['pattern']">
+                        Please enter numbers only.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Date of Birth <span> *</span></label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" formControlName="dateOfBirth"
+                    class="form-input w-full rounded" required>
+                <div
+                    *ngIf="registrationForm.get('dateOfBirth')?.invalid && registrationForm.get('dateOfBirth')?.touched">
+                    <small class="error-text" *ngIf="registrationForm.get('dateOfBirth')?.errors?.['required']">
+                        Date of birth is required
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Gender <span> *</span></label>
+                <div>
+                    <label *ngFor="let gender of genders">
+                        <div class="form-radio">
+                            <input type="radio" formControlName="gender" [value]="gender">
+                            <p>{{ gender | titlecase }}</p>
+                        </div>
+                    </label>
+                </div>
+                <div *ngIf="registrationForm.get('gender')?.invalid && registrationForm.get('gender')?.touched">
+                    <small class="error-text" *ngIf="registrationForm.get('gender')?.errors?.['required']">
+                        Gender is required
+                    </small>
+                </div>
+            </div>
+
+            <!-- Teacher Specific Fields -->
+            <div *ngIf="selectedRole === 'teacher'" class="space-y-4">
+                <div class="form-group">
+                    <label class="form-label">Service Status <span> *</span></label>
+                    <select formControlName="serviceStatus" class="form-select w-full rounded">
+                        <option value="">Select Service Status</option>
+                        <option *ngFor="let status of serviceStatuses" [value]="status">{{status}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Available for Classes?</label>
+                    <div>
+                        <label class="checkbox-item">
+                            <div class="form-checkbox">
+                                <input type="checkbox" formControlName="isAvailable">
+                                <p>( Check if Available )</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Specific Fields -->
+            <div *ngIf="selectedRole === 'student'" class="space-y-4">
+                <div class="form-group">
+                    <label class="form-label">Entrance Year <span> *</span></label>
+                    <select formControlName="entranceYear" class="form-select w-full rounded">
+                        <option value="">Select Entrance Year</option>
+                        <option *ngFor="let year of startYears" [value]="year">{{year}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Estimated Exit Year <span> *</span></label>
+                    <select formControlName="estimatedExitYear" class="form-select w-full rounded">
+                        <option value="">Select Estimated Exit Year</option>
+                        <option *ngFor="let year of endYears" [value]="year">{{year}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Common Fields -->
+            <div *ngIf="selectedRole === 'teacher' || selectedRole === 'student'">
+                <div class="form-group">
+                    <label class="form-label">Class Category<span> *</span></label>
+                    <div>
+                        <div class="form-select-group">
+                            <div class="form-select-div">Filter By Batch: </div>
+                            <select class="form-select-select" formControlName="batchId" class="form-select rounded">
+                                <option value="">Select Batch</option>
+                                <option *ngFor="let batch of allBatches" [value]="batch.id">
+                                    {{batch.code}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="form-select-group">
+                            <div class="form-select-div">Select Category: </div>
+                            <select class="form-select-select" formControlName="classCategoryId"
+                                class="form-select rounded">
+                                <option value="">Select Category</option>
+                                <option *ngFor="let category of classCategories" [value]="category.id">
+                                    {{category.code}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Class Subjects<span> *</span></label>
+                    <div>
+                        <div class="form-select-group" *ngIf="selectedRole === 'teacher'">
+                            <div class="form-select-div">Filter By Subjects: </div>
+                            <select class="form-select-select" formControlName="subjectId" class="form-select rounded">
+                                <option value="">Select Subjects</option>
+                                <option *ngFor="let subject of allSubjects" [value]="subject.id">
+                                    {{subject.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="divider"></div>
+                        <div style="border-bottom: 0.5px solid black;"
+                            *ngIf="selectedRole === 'teacher' && isDisplayClassSubjectsForTeacher && checkedClassSubjects.length > 0">
+                            <div>
+                                <label class="form-label">Selected Subjects:</label>
+                                <label *ngFor="let subject of checkedClassSubjects" class="checkbox-item">
+                                    <div class="form-checkbox">
+                                        <input type="checkbox" [checked]="isSubjectSelected(subject.id!)"
+                                            (change)="onSubjectChange(subject!, $event)">
+                                        <p>{{ subject.code | subjectCodeTransform }} ({{subject.code}})</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div
+                            *ngIf="selectedRole === 'teacher' && isDisplayClassSubjectsForTeacher || selectedRole === 'student' ">
+                            <label *ngFor="let subject of classSubjects" class="checkbox-item">
+                                <div class="form-checkbox">
+                                    <input type="checkbox" [checked]="isSubjectSelected(subject.id!)"
+                                        (change)="onSubjectChange(subject! , $event)">
+                                    <p>{{ subject.code | subjectCodeTransform }} ({{subject.code}})</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" [disabled]="registrationForm.invalid" class="submit-btn">Register</button>
+        </form>
+    </div>
+</div>

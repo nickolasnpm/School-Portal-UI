@@ -1,0 +1,42 @@
+<div class="form-container">
+    <div class="form-card">
+        <h2>Verify Account</h2>
+        <form [formGroup]="verifyForm" (ngSubmit)="verifyAccount()">
+            <div class="form-group">
+                <label class="form-label" for="emailAddress">Email Address<span> *</span></label>
+                <input type="email" id="email" name="emailAddress" formControlName="emailAddress"
+                    placeholder="Enter your email" required maxlength="50">
+                <div *ngIf="verifyForm.get('emailAddress')?.invalid && verifyForm.get('emailAddress')?.touched">
+                    <small class="error-text" *ngIf="verifyForm.get('emailAddress')?.errors?.['required']">Email is
+                        required.</small>
+                    <small class="error-text" *ngIf="verifyForm.get('emailAddress')?.errors?.['email']">Enter a valid
+                        email.</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="mobileNumber">Mobile Number<span> *</span></label>
+                <input type="tel" id="mobileNumber" name="mobileNumber" formControlName="mobileNumber"
+                    placeholder="Enter your mobile number" required pattern="[0-9]*" inputmode="numeric">
+                <div *ngIf="verifyForm.get('mobileNumber')?.invalid && verifyForm.get('mobileNumber')?.touched">
+                    <small class="error-text" *ngIf="verifyForm.get('mobileNumber')?.errors?.['required']">Mobile Number
+                        is required.</small>
+                    <small class="error-text" *ngIf="verifyForm.get('mobileNumber')?.errors?.['pattern']">
+                        Please enter numbers only.
+                    </small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="verificationNumber">Verification Number<span> *</span></label>
+                <input type="text" id="verificationNumber" formControlName="verificationNumber"
+                    placeholder="Enter verification code" required maxlength="6" pattern=".{6,6}">
+                <div
+                    *ngIf="verifyForm.get('verificationNumber')?.invalid && verifyForm.get('verificationNumber')?.touched">
+                    <small class="error-text">Please enter a 6-digit verification code</small>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn" [disabled]="verifyForm.invalid" (click)="verifyAccount()">Verify
+                Account</button>
+        </form>
+        <button type="button" class="back-btn" (click)="backToLogin()">Back to Login</button>
+    </div>
+</div>

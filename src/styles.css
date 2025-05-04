@@ -1,0 +1,382 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --form-btn-continue-bg-normal: #007bff;
+  --form-btn-continue-bg-hover: #0056b3;
+  --form-btn-back-bg-normal: #0becb4;
+  --form-btn-back-bg-hover: #0a8f62;
+  --form-btn-text: black;
+
+  --linked-small-text-normal: #2563eb;
+  --linked-small-text-hover: #1d4ed8;
+
+  --card-background-color: #f3f4f6;
+
+  --selection-btn-text: blue;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.form-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px grey;
+  width: 100%;
+  max-width: 400px;
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    padding: 10px;
+  }
+
+  .form-card {
+    padding: 16px;
+  }
+
+  .space-x-4 {
+    gap: 12px;
+  }
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: black;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: black;
+    font-weight: bold;
+
+    span {
+      color: red;
+    }
+  }
+
+  input {
+    width: -webkit-fill-available;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 0 5px 0;
+  }
+
+  small {
+    color: red;
+    padding: 8px;
+    display: block;
+    text-align: center;
+  }
+}
+
+.form-radio,
+.form-checkbox {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 1em;
+  line-height: 0.05rem;
+
+  input {
+    width: auto;
+  }
+
+  p {
+    margin-left: 1em;
+    color: var(--selection-btn-text);
+  }
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--form-btn-continue-bg-normal);
+  color: var(--form-btn-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 10px 0px;
+}
+
+.submit-btn:disabled {
+  cursor: not-allowed;
+}
+
+.submit-btn:hover {
+  background-color: var(--form-btn-continue-bg-hover);
+}
+
+.back-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--form-btn-back-bg-normal);
+  color: var(--form-btn-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.back-btn:disabled {
+  cursor: not-allowed;
+}
+
+.back-btn:hover {
+  background-color: var(--form-btn-back-bg-hover);
+}
+
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-container input {
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-password:focus {
+  outline: none;
+}
+
+.toggle-password i {
+  color: #666;
+}
+
+.toggle-password:hover i {
+  color: #333;
+}
+
+.divider {
+  margin: 1em;
+}
+
+/* TABLE  */
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+.number-column {
+  width: 50px;
+  text-align: center;
+}
+
+.name:hover {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}
+
+.role-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.role-badge {
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  background-color: #e6f3ff;
+  color: #1e40af;
+}
+
+.btn-edit {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  background-color: blue;
+  color: white;
+  transition: background-color 0.2s;
+  margin: 2px;
+}
+
+.btn-edit:hover {
+  background-color: blue;
+}
+
+.btn-edit:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.btn-edit:disabled:hover {
+  background-color: #cccccc;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.btn-add {
+  padding: 8px 16px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: end;
+  transition: background-color 0.2s;
+  margin: 20px;
+}
+
+.btn-add:hover {
+  background-color: green;
+  opacity: 0.5;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.btn-primary:hover {
+  background-color: #007bff;
+  opacity: 0.5;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.btn-secondary:hover {
+  background-color: #6c757d;
+  opacity: 0.5;
+}
+
+/* TABLE  */
+
+@media (max-width: 768px) {
+  .table-container {
+    margin: 0 -20px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th,
+  td {
+    padding: 8px;
+  }
+}
+
+/* PAGINATION  */
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.pagination-btn {
+  padding: 8px 12px;
+  margin: 0 4px;
+  border: 1px solid white;
+  border-radius: 10%;
+  background-color: gainsboro;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pagination-btn.active {
+  background-color: #007bff; /* Bluish background */
+  color: black;
+  font-weight: bold;
+  border: 2px solid #0056b3; /* Bold border */
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-btn:hover:not([disabled]) {
+  background-color: #f0f0f0;
+}
+
+.pagination-btn[disabled] {
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.pagination-dropdown {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* PAGINATION  */

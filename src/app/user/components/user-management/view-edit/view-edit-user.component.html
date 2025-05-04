@@ -1,0 +1,157 @@
+<div *ngIf="userData" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="title">{{ isEdit ? 'Edit User' : 'View User' }}</h2>
+            <button class="close-button" (click)="close()">×</button>
+        </div>
+
+        <form [formGroup]="userForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" formControlName="fullName" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="tag">Serial Tag</label>
+                    <input type="text" id="tag" formControlName="serialTag" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" formControlName="emailAddress" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="mobile">Mobile Number</label>
+                    <input type="tel" id="mobile" formControlName="mobileNumber" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dob">Date Of Birth</label>
+                    <input type="date" id="dob" formControlName="dateOfBirth" class="form-control"
+                        (change)="onDateChange($event)" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age (years old)</label>
+                    <input type="text" id="age" formControlName="age" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <input type="text" id="gender" formControlName="gender" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="isActive">Account Validity</label>
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="isActive" formControlName="isActive"
+                            (change)="onAccountValidityChange($event)">
+                        <p>( Check if user is Active )</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select id="role" formControlName="role" class="form-control" required>
+                        <option *ngFor="let role of availableRoles" [value]="role.title">
+                            {{role.title}}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group" *ngIf="!user?.roles?.includes('Admin')">
+                    <label for="classCategory">Class</label>
+                    <select id="classCategory" formControlName="classCategory" class="form-control"
+                        (change)="onClassCategoryChange($event)">
+                        <option *ngFor="let class of availableClasses" [value]="class.code">
+                            {{class.code}}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- student information -->
+                <div *ngIf="userData.student && userData.roles.includes('Student')" [formGroup]="studentForm">
+                    <div class="form-group">
+                        <label for="entranceYear">Entrance Year</label>
+                        <input type="number" id="entranceYear" formControlName="entranceYear" class="form-control"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estimatedExitYear">Estimated Exit Year</label>
+                        <input type="number" id="estimatedExitYear" formControlName="estimatedExitYear"
+                            class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="realExitYear">Real Exit Year</label>
+                        <input type="number" id="realExitYear" formControlName="realExitYear" class="form-control"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exitReason">Exit Reason</label>
+                        <input type="text" id="exitReason" formControlName="exitReason" class="form-control" required>
+                    </div>
+                </div>
+
+                <!-- teacher information -->
+                <div *ngIf="userData.teacher && userData.roles.includes('Teacher')" [formGroup]="teacherForm">
+                    <div class="form-group">
+                        <label for="serviceStatus">Service Status</label>
+                        <select id="serviceStatus" formControlName="serviceStatus" class="form-control" required>
+                            <option *ngFor="let status of availableServiceStatus" [value]="status">
+                                {{status}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="isAvailable">Availability</label>
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="isAvailable" formControlName="isAvailable">
+                            <p>( Check if Available )</p>
+                        </div>
+                    </div>
+                    <!-- type and focus can ONLY be updated when updating batch or subject -->
+                    <div class="form-group">
+                        <label for="responsibilityType">Responsibility Type</label>
+                        <input type="text" id="responsibilityType" formControlName="responsibilityType"
+                            class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="responsibilityFocus">Responsibility Focus</label>
+                        <input type="text" id="responsibilityFocus" formControlName="responsibilityFocus"
+                            class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" *ngIf="!user?.roles?.includes('Admin')">
+                <label for="classSubjects">Subjects</label>
+                <div class="subjects-container">
+                    <label *ngFor="let subject of availableSubjects" class="checkbox-item">
+                        <div class="form-checkbox">
+                            <input type="checkbox" [checked]="isSubjectSelected(subject.id!)"
+                                (change)="onSubjectChange(subject.id!, $event)"
+                                [disabled]="isfromUserProfile || !isEdit">
+                            <p>{{ subject.code | subjectCodeTransform }} ({{subject.code}})</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" *ngIf="isEdit" class="btn-primary" (click)="save()"
+                    [disabled]="userForm.invalid">
+                    Update
+                </button>
+                <button type="button" *ngIf="isEdit && isAdmin" class="btn-primary" (click)="deleteUser(userData)">
+                    Delete
+                </button>
+                <button type="button" *ngIf="isEdit && isAdmin" class="btn-primary"
+                    (click)="reInviteUser(userData)">
+                    Re-Invite
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

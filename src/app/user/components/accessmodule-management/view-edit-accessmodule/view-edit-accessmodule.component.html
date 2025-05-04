@@ -1,0 +1,47 @@
+<div *ngIf="accessModule && isAdmin" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="title">{{ isEdit ? 'Edit Module' : 'View Module' }}</h2>
+            <button class="close-button" (click)="close()">×</button>
+        </div>
+
+        <form [formGroup]="accessModuleForm">
+
+            <div class="form-group">
+                <label class="form-label">Name <span> *</span></label>
+                <input type="text" id="name" name="name" formControlName="name" class="form-input w-full rounded"
+                    placeholder="Enter module name" required
+                    [ngClass]="{'border-red-500': accessModuleForm.get('name')?.invalid && accessModuleForm.get('name')?.touched}">
+                <div *ngIf="accessModuleForm.get('name')?.touched">
+                    <small class="error-text" *ngIf="accessModuleForm.get('name')?.errors?.['required']">Module name
+                        is required</small>
+                    <small class="error-text" *ngIf="accessModuleForm.get('name')?.errors?.['minlength']">Module
+                        name must be at least 2 characters long</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="roles">Roles <span> *</span></label>
+                <div class="roles-container">
+                    <label *ngFor="let role of allRoles" class="checkbox-item">
+                        <div class="form-checkbox">
+                            <input type="checkbox" [checked]="isRoleSelected(role.id!)"
+                                (change)="onRoleChange(role.id!, $event)" [disabled]="!isEdit">
+                            <p>{{ role.title }}</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" *ngIf="isEdit" class="btn-primary" (click)="save(accessModule)"
+                    [disabled]="accessModuleForm.invalid">
+                    Update
+                </button>
+                <button type="button" *ngIf="isEdit" class="btn-primary" (click)="deleteModule(accessModule)">
+                    Delete
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

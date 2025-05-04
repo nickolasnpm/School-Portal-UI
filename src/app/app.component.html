@@ -1,0 +1,9 @@
+<fieldset *ngIf="showHeaderFooter">
+    <app-header></app-header>
+</fieldset>
+<fieldset>
+    <router-outlet></router-outlet>
+</fieldset>
+<fieldset *ngIf="showHeaderFooter">
+    <app-footer></app-footer>
+</fieldset>

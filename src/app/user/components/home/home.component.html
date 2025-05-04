@@ -1,0 +1,37 @@
+<!-- home.component.html -->
+<div class="home-container">
+    <!-- Modules Section -->
+    <section class="modules-section">
+        <h2>My Modules</h2>
+        <div class="modules-grid">
+            <div class="module-card" *ngFor="let module of modules">
+                <div class="card-header">
+                    <h3>{{module.title}}</h3>
+                </div>
+                <div class="card-content">
+                    <p>{{module.description}}</p>
+                    <a [routerLink]="module.link" class="module-link">
+                        Access {{module.title}} →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News & Announcements Section -->
+    <section class="announcements-section">
+        <h2>News, Media & Announcements</h2>
+        <div class="announcements-card">
+            <div class="announcement-list" *ngFor="let announcement of announcements">
+                <div class="announcement-item">
+                    <div class="announcement-header">
+                        <h3 [routerLink]="announcement.link">{{announcement.title}}</h3>
+                        <span class="date">{{announcement.date | date:'mediumDate'}}</span>
+                    </div>
+                    <p class="announcement-content">{{announcement.content}}</p>
+                    <p class="announcement-tag">#{{announcement.type}}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

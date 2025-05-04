@@ -1,0 +1,109 @@
+<header class="header">
+    <div class="header-content">
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger-button" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen"
+            aria-label="Toggle menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+
+        <div class="logo">
+            <h1 (click)="goToHome()">School Portal</h1>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <div class="desktop-nav">
+            <!-- Modules Navigation Dropdown -->
+            <nav class="nav-modules">
+                <button (click)="toggleModulesDropdown()" class="dropdown-button modules-button">
+                    Modules
+                    <svg [class.rotate]="isModulesOpen" class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+                    </svg>
+                </button>
+
+                <div *ngIf="isModulesOpen" class="dropdown-menu">
+                    <a *ngFor="let item of moduleItems" [routerLink]="item.link" class="dropdown-item"
+                        (click)="toggleModulesDropdown()">
+                        {{ item.label }}
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Management Navigation Dropdown -->
+            <nav class="nav-management">
+                <button (click)="toggleManagementDropdown()" class="dropdown-button management-button">
+                    Management
+                    <svg [class.rotate]="isManagementOpen" class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+                    </svg>
+                </button>
+
+                <div *ngIf="isManagementOpen" class="dropdown-menu">
+                    <a *ngFor="let item of managementItems" [routerLink]="item.link" class="dropdown-item"
+                        (click)="toggleManagementDropdown()">
+                        {{ item.label }}
+                    </a>
+                </div>
+            </nav>
+
+            <nav class="nav-logout">
+                <button (click)="logout()" class="logout-button">
+                    Logout
+                </button>
+            </nav>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav" [class.mobile-nav-open]="isMobileMenuOpen">
+
+            <nav class="mobile-nav-content">
+
+                <button class="hamburger-button" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen"
+                    aria-label="Toggle menu">X
+                </button>
+
+                <!-- Modules Section -->
+                <div class="mobile-section">
+                    <button class="mobile-section-header" (click)="toggleMobileSection('modules')">
+                        <span>Modules</span>
+                        <svg class="section-arrow" [class.rotate]="isMobileModulesExpanded"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+                        </svg>
+                    </button>
+                    <div class="mobile-section-content" [class.expanded]="isMobileModulesExpanded">
+                        <a *ngFor="let item of moduleItems" [routerLink]="item.link" class="mobile-nav-item"
+                            (click)="toggleMobileMenu()">
+                            {{ item.label }}
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Management Section -->
+                <div class="mobile-section">
+                    <button class="mobile-section-header" (click)="toggleMobileSection('management')">
+                        <span>Management</span>
+                        <svg class="section-arrow" [class.rotate]="isMobileManagementExpanded"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+                        </svg>
+                    </button>
+                    <div class="mobile-section-content" [class.expanded]="isMobileManagementExpanded">
+                        <a *ngFor="let item of managementItems" [routerLink]="item.link" class="mobile-nav-item"
+                            (click)="toggleMobileMenu()">
+                            {{ item.label }}
+                        </a>
+                    </div>
+                </div>
+
+                <button (click)="logout()" class="mobile-logout-button">
+                    Logout
+                </button>
+            </nav>
+        </div>
+    </div>
+</header>
