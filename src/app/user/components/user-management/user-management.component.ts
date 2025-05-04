@@ -97,8 +97,8 @@ export class UserManagementComponent implements OnInit {
     if (this.isAdmin || this.isTeacher) {
       this._userService.getAllUsers(null).subscribe({
         next: (result: userListResponse) => {
-          if (result) {
-            let userLists = result.paginationList;
+          if (result && result.paginationList) {
+            let userLists: userResponse[] = result.paginationList;
             if (this.isTeacher) {
               userLists = this.applyTeacherFilter(userLists);
             }
