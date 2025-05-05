@@ -6,8 +6,8 @@ export interface classRankResponse {
   code: string;
   isActive: boolean;
   classCategories?: classCategoryResponse[];
-  Batches?: string[];
-  ClassStreams?: string[];
+  batches?: string[];
+  classStreams?: string[];
 }
 
 export interface classRankRequest {
