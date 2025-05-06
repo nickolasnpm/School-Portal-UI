@@ -513,9 +513,11 @@ export class ViewEditUserComponent implements OnInit, OnChanges {
   save() {
     if (this.userForm.invalid) {
       const invalidControls = this.getInvalidControls(this.userForm);
-      console.error('Invalid controls:', invalidControls);
-      this._alertService.displayAlert('Please fill in all required fields');
-      return;
+      if (invalidControls.length > 0) {
+        this._alertService.displayAlert(
+          `Please fill in all required fields: ${invalidControls.join(', ')}`
+ );;
+      }
     }
 
     if (!this.userData) return;

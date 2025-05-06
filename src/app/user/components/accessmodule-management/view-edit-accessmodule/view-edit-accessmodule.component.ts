@@ -149,8 +149,11 @@ export class ViewEditAccessmoduleComponent implements OnInit, OnChanges {
     // check validity
     if (this.accessModuleForm.invalid) {
       const invalidControls = this.getInvalidControls(this.accessModuleForm);
-      this._alertService.displayAlert('Please fill in all required fields');
-      return;
+      if (invalidControls.length > 0) {
+        this._alertService.displayAlert(
+          `Please fill in all required fields: ${invalidControls.join(', ')}`
+        );
+      }
     }
 
     // create object
