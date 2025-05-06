@@ -111,8 +111,11 @@ export class ViewEditRoleComponent implements OnInit, OnChanges {
     // check validity
     if (this.roleForm.invalid) {
       const invalidControls = this.getInvalidControls(this.roleForm);
-      this._alertService.displayAlert('Please fill in all required fields');
-      return;
+      if (invalidControls.length > 0) {
+        this._alertService.displayAlert(
+          `Please fill in all required fields: ${invalidControls.join(', ')}`
+        );
+      }
     }
 
     // create object

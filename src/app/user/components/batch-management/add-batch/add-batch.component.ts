@@ -17,7 +17,7 @@ import { userResponse } from '../../../models/User';
   selector: 'app-add-batch',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  providers: [StorageService, AlertService, BatchService, UserService],
+  providers: [AlertService, BatchService, UserService],
   templateUrl: './add-batch.component.html',
   styleUrl: './add-batch.component.css',
 })
@@ -31,7 +31,6 @@ export class AddBatchComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private _storageService: StorageService,
     private _alertService: AlertService,
     private _batchService: BatchService
   ) {
@@ -134,24 +133,15 @@ export class AddBatchComponent implements OnInit {
     return undefined;
   }
 
-  getBatch(name: string): batchResponse | undefined {
-    const batch = this.allBatches.find(
-      (ab) => ab.name.toLowerCase() === name.toLowerCase()
-    );
-
-    if (batch) {
-      return batch;
-    }
-
-    return undefined;
-  }
-
   onSubmit() {
     // check validity
     if (this.batchForm.invalid) {
       const invalidControls = this.getInvalidControls(this.batchForm);
-      this._alertService.displayAlert('Please fill in all required fields');
-      return;
+      if (invalidControls.length > 0) {
+        this._alertService.displayAlert(
+          `Please fill in all required fields: ${invalidControls.join(', ')}`
+        );
+      }
     }
 
     // create object

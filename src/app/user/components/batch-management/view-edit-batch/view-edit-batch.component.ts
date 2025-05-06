@@ -177,8 +177,11 @@ export class ViewEditBatchComponent implements OnInit, OnChanges {
     // check validity
     if (this.batchForm.invalid) {
       const invalidControls = this.getInvalidControls(this.batchForm);
-      this._alertService.displayAlert('Please fill in all required fields');
-      return;
+      if (invalidControls.length > 0) {
+        this._alertService.displayAlert(
+          `Please fill in all required fields: ${invalidControls.join(', ')}`
+        );
+      }
     }
 
     // create object
