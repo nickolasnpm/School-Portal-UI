@@ -14,7 +14,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { StorageService } from '../../../../../template/services/storage/storage.service';
 import { AlertService } from '../../../../../template/services/alert/alert.service';
 import { BatchService } from '../../../../services/batch/batch.service';
 import { UserService } from '../../../../services/user/user.service';
@@ -25,7 +24,7 @@ import { batchRequest, batchResponse } from '../../../../models/Batch';
   selector: 'app-view-edit-batch',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  providers: [StorageService, AlertService, BatchService, UserService],
+  providers: [AlertService, BatchService, UserService],
   templateUrl: './view-edit-batch.component.html',
   styleUrl: './view-edit-batch.component.css',
 })
@@ -44,7 +43,6 @@ export class ViewEditBatchComponent implements OnInit, OnChanges {
 
   constructor(
     private fb: FormBuilder,
-    private _storageService: StorageService,
     private _alertService: AlertService,
     private _batchService: BatchService
   ) {
