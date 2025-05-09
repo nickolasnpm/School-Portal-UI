@@ -19,6 +19,10 @@ import { BatchService } from '../../../../services/batch/batch.service';
 import { UserService } from '../../../../services/user/user.service';
 import { userResponse } from '../../../../models/User';
 import { batchRequest, batchResponse } from '../../../../models/Batch';
+import { ClassStreamService } from '../../../../services/class-stream/class-stream.service';
+import { ClassRankService } from '../../../../services/class-rank/class-rank.service';
+import { classStreamResponse } from '../../../../models/ClassStream';
+import { classRankResponse } from '../../../../models/ClassRank';
 
 @Component({
   selector: 'app-view-edit-batch',
@@ -41,16 +45,23 @@ export class ViewEditBatchComponent implements OnInit, OnChanges {
 
   batchForm!: FormGroup;
 
+  allStreams: classStreamResponse[] = [];
+  allRanks: classRankResponse[] = [];
+
   constructor(
     private fb: FormBuilder,
     private _alertService: AlertService,
-    private _batchService: BatchService
+    private _batchService: BatchService,
+    private _rankService: ClassRankService,
+    private _streamService: ClassStreamService
   ) {
     this.initializeForm();
   }
 
   ngOnInit(): void {
     this.updateForms();
+    this.loadStreams();
+    this.loadRanks();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -69,6 +80,8 @@ export class ViewEditBatchComponent implements OnInit, OnChanges {
       code: ['', Validators.required],
       isActive: [true],
       teacherId: [''],
+      streams: [[], Validators.required],
+      ranks: [[], Validators.required],
     });
   }
 
@@ -157,6 +170,34 @@ export class ViewEditBatchComponent implements OnInit, OnChanges {
     }
 
     return undefined;
+  }
+
+  loadStreams() {
+    this._streamService.getAll(true).subscribe({
+      next: (res: classStreamResponse[]) => {
+        if (res) {
+          this.allStreams = res;
+        }
+      },
+      error: (err) => {
+        console.error(err.error);
+        this._alertService.displayAlert('Failed to load class stream list');
+      },
+    });
+  }
+
+  loadRanks() {
+    this._rankService.getAll(true).subscribe({
+      next: (res: classRankResponse[]) => {
+        if (res) {
+          this.allRanks = res;
+        }
+      },
+      error: (err) => {
+        console.error(err.error);
+        this._alertService.displayAlert('Failed to load class rank list');
+      },
+    });
   }
 
   getBatch(name: string): batchResponse | undefined {
