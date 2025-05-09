@@ -1,4 +1,6 @@
 import { classCategoryResponse } from './ClassCategory';
+import { classRankResponse } from './ClassRank';
+import { classStreamResponse } from './ClassStream';
 
 export interface batchResponse {
   id: string;
@@ -7,8 +9,8 @@ export interface batchResponse {
   isActive: boolean;
   teacherId?: string;
   classCategories?: classCategoryResponse[];
-  classStreams?: string[];
-  classRanks?: string[];
+  classStreams?: classStreamResponse[];
+  classRanks?: classRankResponse[];
 }
 
 export interface batchRequest {
@@ -16,4 +18,6 @@ export interface batchRequest {
   code: string;
   isActive: boolean;
   teacherId: string;
+  classStreamIds: string[];
+  classRankIds: string[];
 }
