@@ -6,8 +6,8 @@ export interface classStreamResponse {
   code: string;
   isActive: boolean;
   classCategories?: classCategoryResponse[];
-  Batches?: string[];
-  ClassRanks?: string[];
+  batches?: string[];
+  classRanks?: string[];
 }
 
 export interface classStreamRequest {

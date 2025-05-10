@@ -1,1 +1,96 @@
-<p>stream-management works!</p>
+<div class="container">
+    <h2 class="title">Stream Management</h2>
+    <div>
+        <button class="btn-add" (click)="addStream()">Add Stream</button>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="number-column">#</th>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>IsActive</th>
+                    <th>Batch</th>
+                    <th>Rank</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let stream of allStreams; let i = index">
+                    <td class="number-column">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                    <td class="name" (click)="viewStream(stream)">{{ stream.name }}</td>
+                    <td class="code">{{ stream.code }}</td>
+                    <td class="isActive">{{ stream.isActive }}</td>
+                    <td>
+                        <div class="child-container">
+                            <ng-container *ngFor="let b of stream.batches; let i = index; let last = last"
+                                class="role-badge">
+                                {{ b }}<span *ngIf="!last">, </span>
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="child-container">
+                            <ng-container *ngFor="let cs of stream.classRanks; let i = index; let last = last"
+                                class="role-badge">
+                                {{ cs }}<span *ngIf="!last">, </span>
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="child-container">
+                            <ng-container *ngFor="let cc of stream.classCategories; let i = index; let last = last"
+                                class="role-badge">
+                                {{ cc.code }}<span *ngIf="!last">, </span>
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn-edit" (click)="editStream(stream)">Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <div class="pagination-container">
+                            <!-- Show items range -->
+                            <span class="pagination-info">
+                                Showing {{ getStartItem() }} to {{ getEndItem() }} of {{ allStreams.length }}
+                                total
+                            </span>
+                            <button class="pagination-btn" (click)="changePage(currentPage - 1)"
+                                [disabled]="currentPage === 1">Previous</button>
+
+                            <span *ngFor="let page of getTotalPages()">
+                                <button class="pagination-btn" [class.active]="currentPage === page"
+                                    (click)="changePage(page)">
+                                    {{ page }}
+                                </button>
+                            </span>
+
+                            <button class="pagination-btn" (click)="changePage(currentPage + 1)"
+                                [disabled]="currentPage === totalPages">Next</button>
+
+                            <select class="pagination-select" (change)="changeItemsPerPage($event)">
+                                <option *ngFor="let option of itemsPerPageOptions" [value]="option"
+                                    [selected]="itemsPerPage === option">
+                                    {{ option }}
+                                </option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- <div *ngIf="showViewEditPopup">
+        <app-view-edit-stream [isEdit]="isEdit" [isAdmin]="isAdmin" [stream]="selectedStream" [allStreams]="allStreams"
+            (popupForm)="closePopupForm()"></app-view-edit-stream>
+    </div>
+    <div *ngIf="showAddPopup">
+        <app-add-stream [isEdit]="isEdit" [allStreams]="allStreams" (popupForm)="closePopupForm()"></app-add-stream>
+    </div> -->
+</div>
