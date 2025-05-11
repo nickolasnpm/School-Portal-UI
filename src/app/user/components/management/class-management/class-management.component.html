@@ -1,1 +1,103 @@
-<p>class-management works!</p>
+<div class="container">
+    <h2 class="title">Category Management</h2>
+    <div>
+        <button class="btn-add" (click)="addCategory()">Add Category</button>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="number-column">#</th>
+                    <th>Code</th>
+                    <th>Year</th>
+                    <th>Batch</th>
+                    <th>Stream</th>
+                    <th>Rank</th>
+                    <th>Subjects</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let category of allCategories; let i = index">
+                    <td class="number-column">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                    <td class="code" (click)="viewCategory(category)">{{ category.code }}</td>
+                    <td class="year">{{ category.academicYear }}</td>
+                    <td>
+                        <div class="child-container">
+                            <ng-container *ngFor="let b of classBatches; let i = index; let last = last"
+                                class="role-badge">
+                                {{ b }}<span *ngIf="!last">, </span>
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="child-container">
+                            <ng-container *ngFor="let cs of classStreams; let i = index; let last = last"
+                                class="role-badge">
+                                {{ cs }}<span *ngIf="!last">, </span>
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="child-container">
+                            <ng-container *ngFor="let cr of classRanks; let i = index; let last = last"
+                                class="role-badge">
+                                {{ cr }}<span *ngIf="!last">, </span>
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="child-container">
+                            <ng-container *ngFor="let s of category.subjects; let i = index; let last = last"
+                                class="role-badge">
+                                {{ s }}<span *ngIf="!last">, </span>
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn-edit" (click)="editCategory(category)">Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <div class="pagination-container">
+                            <!-- Show items range -->
+                            <span class="pagination-info">
+                                Showing {{ getStartItem() }} to {{ getEndItem() }} of {{ allCategories.length }}
+                                total
+                            </span>
+                            <button class="pagination-btn" (click)="changePage(currentPage - 1)"
+                                [disabled]="currentPage === 1">Previous</button>
+
+                            <span *ngFor="let page of getTotalPages()">
+                                <button class="pagination-btn" [class.active]="currentPage === page"
+                                    (click)="changePage(page)">
+                                    {{ page }}
+                                </button>
+                            </span>
+
+                            <button class="pagination-btn" (click)="changePage(currentPage + 1)"
+                                [disabled]="currentPage === totalPages">Next</button>
+
+                            <select class="pagination-select" (change)="changeItemsPerPage($event)">
+                                <option *ngFor="let option of itemsPerPageOptions" [value]="option"
+                                    [selected]="itemsPerPage === option">
+                                    {{ option }}
+                                </option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- <div *ngIf="showViewEditPopup">
+        <app-view-edit-category [isEdit]="isEdit" [isAdmin]="isAdmin" [category]="selectedCategories" [allCategories]="allCategories"
+            (popupForm)="closePopupForm()"></app-view-edit-category>
+    </div>
+    <div *ngIf="showAddPopup">
+        <app-add-category [isEdit]="isEdit" [allCategories]="allCategories" (popupForm)="closePopupForm()"></app-add-category>
+    </div> -->
+</div>
