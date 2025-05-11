@@ -1,1 +1,63 @@
-<p>view-edit-stream works!</p>
+<div *ngIf="stream && isAdmin" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="title">{{ isEdit ? 'Edit Stream' : 'View Stream' }}</h2>
+            <button class="close-button" (click)="close()">×</button>
+        </div>
+
+        <form [formGroup]="streamForm">
+
+            <div class="form-group">
+                <label class="form-label">Name <span> *</span></label>
+                <input type="text" id="name" name="name" formControlName="name" class="form-input w-full rounded"
+                    placeholder="Enter stream name" required
+                    [ngClass]="{'border-red-500': streamForm.get('name')?.invalid && streamForm.get('name')?.touched}">
+                <div *ngIf="streamForm.get('name')?.touched">
+                    <small class="error-text" *ngIf="streamForm.get('name')?.errors?.['required']">Stream name
+                        is required</small>
+                    <small class="error-text" *ngIf="streamForm.get('name')?.errors?.['minlength']">Stream name must be at
+                        least 2 characters long</small>
+                    <small class="error-text" *ngIf="streamForm.get('name')?.errors?.['nameExist']">Stream name already
+                        exist</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Code <span> *</span></label>
+                <input type="text" id="code" name="code" formControlName="code" class="form-input w-full rounded"
+                    placeholder="Enter stream code" required
+                    [ngClass]="{'border-red-500': streamForm.get('code')?.invalid && streamForm.get('code')?.touched}">
+                <div *ngIf="streamForm.get('code')?.touched">
+                    <small class="error-text" *ngIf="streamForm.get('code')?.errors?.['required']">Stream code
+                        is required</small>
+                    <small class="error-text" *ngIf="streamForm.get('code')?.errors?.['minlength']">Stream code must be at
+                        least 2 characters long</small>
+                    <small class="error-text" *ngIf="streamForm.get('code')?.errors?.['codeExist']">Stream code already
+                        exist</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">IsActive</label>
+                <div>
+                    <label class="checkbox-item">
+                        <div class="form-checkbox">
+                            <input type="checkbox" formControlName="isActive">
+                            <p>( Check if the stream is active )</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" *ngIf="isEdit" class="btn-primary" (click)="save(stream)"
+                    [disabled]="streamForm.invalid">
+                    Update
+                </button>
+                <button type="button" *ngIf="isEdit" class="btn-primary" (click)="deleteStream(stream)">
+                    Delete
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
