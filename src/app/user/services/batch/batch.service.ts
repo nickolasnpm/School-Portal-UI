@@ -37,6 +37,18 @@ export class BatchService {
       );
   }
 
+  getById(Id: string): Observable<batchResponse> {
+    const apiUrl = `${this.controllerUrl}/${Id}`;
+
+    return this._httpClient
+      .get<batchResponse>(apiUrl, {
+        headers: this._authService.getHeaders(),
+      })
+      .pipe(
+        catchError((error) => this._httpService.handleError('GetById', error))
+      );
+  }
+
   create(request: batchRequest): Observable<boolean> {
     const apiUrl = `${this.controllerUrl}`;
     return this._httpClient

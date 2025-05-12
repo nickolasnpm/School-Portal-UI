@@ -40,6 +40,18 @@ export class ClassStreamService {
       );
   }
 
+  getById(Id: string): Observable<classStreamResponse> {
+    const apiUrl = `${this.controllerUrl}/${Id}`;
+
+    return this._httpClient
+      .get<classStreamResponse>(apiUrl, {
+        headers: this._authService.getHeaders(),
+      })
+      .pipe(
+        catchError((error) => this._httpService.handleError('GetById', error))
+      );
+  }
+
   create(request: classStreamRequest): Observable<boolean> {
     const apiUrl = `${this.controllerUrl}`;
     return this._httpClient
