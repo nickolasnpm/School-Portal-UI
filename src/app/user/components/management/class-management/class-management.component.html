@@ -22,30 +22,9 @@
                     <td class="number-column">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
                     <td class="code" (click)="viewCategory(category)">{{ category.code }}</td>
                     <td class="year">{{ category.academicYear }}</td>
-                    <td>
-                        <div class="child-container">
-                            <ng-container *ngFor="let b of classBatches; let i = index; let last = last"
-                                class="role-badge">
-                                {{ b }}<span *ngIf="!last">, </span>
-                            </ng-container>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="child-container">
-                            <ng-container *ngFor="let cs of classStreams; let i = index; let last = last"
-                                class="role-badge">
-                                {{ cs }}<span *ngIf="!last">, </span>
-                            </ng-container>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="child-container">
-                            <ng-container *ngFor="let cr of classRanks; let i = index; let last = last"
-                                class="role-badge">
-                                {{ cr }}<span *ngIf="!last">, </span>
-                            </ng-container>
-                        </div>
-                    </td>
+                    <td class="batch">{{ category.batchId ? getBatch(category.batchId) : 'N/A' }}</td>
+                    <td class="rank">{{ category.classRankId ? getRank(category.classRankId) : 'N/A' }}</td>
+                    <td class="stream">{{ category.classStreamId ? getStream(category.classStreamId) : 'N/A' }}</td>
                     <td>
                         <div class="child-container">
                             <ng-container *ngFor="let s of category.subjects; let i = index; let last = last"
@@ -96,8 +75,9 @@
     <!-- <div *ngIf="showViewEditPopup">
         <app-view-edit-category [isEdit]="isEdit" [isAdmin]="isAdmin" [category]="selectedCategories" [allCategories]="allCategories"
             (popupForm)="closePopupForm()"></app-view-edit-category>
-    </div>
-    <div *ngIf="showAddPopup">
-        <app-add-category [isEdit]="isEdit" [allCategories]="allCategories" (popupForm)="closePopupForm()"></app-add-category>
     </div> -->
+    <div *ngIf="showAddPopup">
+        <app-add-class [isEdit]="isEdit" [allCategories]="allCategories" [allBatches]="classBatches"
+            [allRanks]="classRanks" [allStreams]="classStreams" (popupForm)="closePopupForm()"></app-add-class>
+    </div>
 </div>

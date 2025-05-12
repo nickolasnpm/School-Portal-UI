@@ -10,6 +10,12 @@ import { ClassCategoryService } from '../../../services/class-category/class-cat
 import { KeyConstant } from '../../../../template/helper/local-storage/key-constant';
 import { userResponse } from '../../../models/User';
 import { classCategoryResponse } from '../../../models/ClassCategory';
+import { BatchService } from '../../../services/batch/batch.service';
+import { ClassRankService } from '../../../services/class-rank/class-rank.service';
+import { ClassStreamService } from '../../../services/class-stream/class-stream.service';
+import { batchResponse } from '../../../models/Batch';
+import { classStreamResponse } from '../../../models/ClassStream';
+import { classRankResponse } from '../../../models/ClassRank';
 
 @Component({
   selector: 'app-class-management',
@@ -27,9 +33,9 @@ import { classCategoryResponse } from '../../../models/ClassCategory';
 export class ClassManagementComponent implements OnInit {
   adminIdentity: userResponse | undefined;
   allCategories: classCategoryResponse[] = [];
-  classBatches: string[] = [];
-  classStreams: string[] = [];
-  classRanks: string[] = [];
+  classBatches: batchResponse[] = [];
+  classStreams: classStreamResponse[] = [];
+  classRanks: classRankResponse[] = [];
   selectedCategory?: classCategoryResponse;
 
   currentPage: number = 1;
@@ -46,12 +52,18 @@ export class ClassManagementComponent implements OnInit {
   constructor(
     private _alertService: AlertService,
     private _storageService: StorageService,
-    private _classService: ClassCategoryService
+    private _classService: ClassCategoryService,
+    private _batchService: BatchService,
+    private _rankService: ClassRankService,
+    private _streamService: ClassStreamService
   ) {}
 
   ngOnInit(): void {
     this.loadUserDetails();
     this.loadClassCategories();
+    this.loadBatches();
+    this.loadStreams();
+    this.loadRanks();
   }
 
   loadUserDetails() {
@@ -69,11 +81,7 @@ export class ClassManagementComponent implements OnInit {
     this._classService.getAll().subscribe({
       next: (res: classCategoryResponse[]) => {
         if (res) {
-          console.log(res);
           this.allCategories = res;
-          this.loadBatches();
-          this.loadStreams();
-          this.loadRanks();
         }
       },
       error: (err) => {
@@ -85,11 +93,59 @@ export class ClassManagementComponent implements OnInit {
     });
   }
 
-  loadBatches() {}
+  loadBatches() {
+    this._batchService.getAll(true).subscribe({
+      next: (res: batchResponse[]) => {
+        if (res) {
+          this.classBatches = res;
+        }
+      },
+      error: (err) => {
+        console.error(err.error);
+        this._alertService.displayAlert('Failed to load batch list');
+      },
+    });
+  }
 
-  loadStreams() {}
+  loadStreams() {
+    this._streamService.getAll(true).subscribe({
+      next: (res: classStreamResponse[]) => {
+        if (res) {
+          this.classStreams = res;
+        }
+      },
+      error: (err) => {
+        console.error(err.error);
+        this._alertService.displayAlert('Failed to load stream list');
+      },
+    });
+  }
 
-  loadRanks() {}
+  loadRanks() {
+    this._rankService.getAll(true).subscribe({
+      next: (res: classRankResponse[]) => {
+        if (res) {
+          this.classRanks = res;
+        }
+      },
+      error: (err) => {
+        console.error(err.error);
+        this._alertService.displayAlert('Failed to load rank list');
+      },
+    });
+  }
+
+  getBatch(batchId: string) {
+    return this.classBatches.find((b) => b.id === batchId)?.name;
+  }
+
+  getStream(streamId: string) {
+    return this.classStreams.find((s) => s.id === streamId)?.name;
+  }
+
+  getRank(rankId: string) {
+    return this.classRanks.find((r) => r.id === rankId)?.name;
+  }
 
   //#region popup
   viewCategory(batch: classCategoryResponse) {

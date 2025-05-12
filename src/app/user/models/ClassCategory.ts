@@ -9,7 +9,6 @@ export interface classCategoryResponse {
   batchId: string;
   classStreamId: string;
   classRankId: string;
-  classSubjects?: classSubjectResponse[];
   subjects?: string[];
   students?: studentResponse[];
   teachers?: teacherResponse[];
@@ -20,5 +19,5 @@ export interface classCategoryRequest {
   batchId: string;
   classStreamId: string;
   classRankId: string;
-  Subjects?: string[];
+  subjectIds?: string[];
 }
