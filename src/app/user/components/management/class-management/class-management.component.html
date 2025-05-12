@@ -75,8 +75,9 @@
     <!-- <div *ngIf="showViewEditPopup">
         <app-view-edit-category [isEdit]="isEdit" [isAdmin]="isAdmin" [category]="selectedCategories" [allCategories]="allCategories"
             (popupForm)="closePopupForm()"></app-view-edit-category>
-    </div>
-    <div *ngIf="showAddPopup">
-        <app-add-category [isEdit]="isEdit" [allCategories]="allCategories" (popupForm)="closePopupForm()"></app-add-category>
     </div> -->
+    <div *ngIf="showAddPopup">
+        <app-add-class [isEdit]="isEdit" [allCategories]="allCategories" [allBatches]="classBatches"
+            [allRanks]="classRanks" [allStreams]="classStreams" (popupForm)="closePopupForm()"></app-add-class>
+    </div>
 </div>

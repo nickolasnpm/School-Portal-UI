@@ -1,1 +1,61 @@
-<p>add-class works!</p>
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-title">
+            <h2 class="title">Add Category</h2>
+            <button class="close-button" (click)="close()">×</button>
+        </div>
+        <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-group">
+                <label class="form-label">Academic Year<span> *</span></label>
+                <select class="form-select w-full rounded" formControlName="academicYear">
+                    <option value="">Select Academic Year</option>
+                    <option *ngFor="let year of allYears" [value]="year">{{year}}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Batch<span> *</span></label>
+                <select class="form-select w-full rounded" formControlName="batchId">
+                    <option value="">Select Batch</option>
+                    <option *ngFor="let bt of availableBatches" [value]="bt.id">
+                        {{bt.code}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Class Rank<span> *</span></label>
+                <select class="form-select w-full rounded" formControlName="classRankId">
+                    <option value="">Select Rank</option>
+                    <option *ngFor="let rk of availableRanks" [value]="rk.id">
+                        {{rk.code}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Class Stream<span> *</span></label>
+                <select class="form-select w-full rounded" formControlName="classStreamId" class="form-select rounded">
+                    <option value="">Select Stream</option>
+                    <option *ngFor="let st of availableStreams" [value]="st.id">
+                        {{st.code}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Selected Subjects:</label>
+                <label *ngFor="let subject of allSubjects" class="checkbox-item">
+                    <div class="form-checkbox">
+                        <input type="checkbox" [checked]="isSubjectSelected(subject.id!)"
+                            (change)="onSubjectChange(subject! , $event)">
+                        <p>{{ subject.code | subjectCodeTransform }} ({{subject.code}})</p>
+                    </div>
+                </label>
+            </div>
+
+            <button type="submit" [disabled]="categoryForm.invalid" class="submit-btn">Add</button>
+        </form>
+    </div>
+</div>

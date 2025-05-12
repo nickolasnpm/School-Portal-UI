@@ -81,7 +81,6 @@ export class ClassManagementComponent implements OnInit {
     this._classService.getAll().subscribe({
       next: (res: classCategoryResponse[]) => {
         if (res) {
-          console.log(res);
           this.allCategories = res;
         }
       },
