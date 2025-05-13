@@ -20,7 +20,7 @@
             <tbody>
                 <tr *ngFor="let category of allCategories; let i = index">
                     <td class="number-column">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
-                    <td class="code" (click)="viewCategory(category)">{{ category.code }}</td>
+                    <td class="name" (click)="viewCategory(category)">{{ category.code }}</td>
                     <td class="year">{{ category.academicYear }}</td>
                     <td class="batch">{{ category.batchId ? getBatch(category.batchId) : 'N/A' }}</td>
                     <td class="rank">{{ category.classRankId ? getRank(category.classRankId) : 'N/A' }}</td>
@@ -72,10 +72,11 @@
             </tfoot>
         </table>
     </div>
-    <!-- <div *ngIf="showViewEditPopup">
-        <app-view-edit-category [isEdit]="isEdit" [isAdmin]="isAdmin" [category]="selectedCategories" [allCategories]="allCategories"
-            (popupForm)="closePopupForm()"></app-view-edit-category>
-    </div> -->
+    <div *ngIf="showViewEditPopup">
+        <app-view-edit-class [isEdit]="isEdit" [isAdmin]="isAdmin" [category]="selectedCategory"
+            [allCategories]="allCategories" [allBatches]="classBatches" [allRanks]="classRanks"
+            [allStreams]="classStreams" (popupForm)="closePopupForm()"></app-view-edit-class>
+    </div>
     <div *ngIf="showAddPopup">
         <app-add-class [isEdit]="isEdit" [allCategories]="allCategories" [allBatches]="classBatches"
             [allRanks]="classRanks" [allStreams]="classStreams" (popupForm)="closePopupForm()"></app-add-class>
