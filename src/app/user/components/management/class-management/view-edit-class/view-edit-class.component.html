@@ -1,1 +1,75 @@
-<p>view-edit-class works!</p>
+<div *ngIf="category && isAdmin" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="title">{{ isEdit ? 'Edit Class Category' : 'View Class Category' }}</h2>
+            <button class="close-button" (click)="close()">×</button>
+        </div>
+
+        <div class="modal-title">
+            <h3 class="centered-title">Class Category: {{ categoryCode }}</h3>
+        </div>
+
+        <form [formGroup]="categoryForm">
+
+            <div class="form-group">
+                <label class="form-label">Academic Year<span> *</span></label>
+                <select class="form-select w-full rounded" formControlName="academicYear">
+                    <option value="">Select Academic Year</option>
+                    <option *ngFor="let year of allYears" [value]="year">{{year}}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Batch<span> *</span></label>
+                <select class="form-select w-full rounded" formControlName="batchId">
+                    <option value="">Select Batch</option>
+                    <option *ngFor="let bt of availableBatches" [value]="bt.id">
+                        {{bt.code}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Class Stream<span> *</span></label>
+                <select class="form-select w-full rounded" formControlName="classStreamId" class="form-select rounded">
+                    <option value="">Select Stream</option>
+                    <option *ngFor="let st of availableStreams" [value]="st.id">
+                        {{st.code}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Class Rank<span> *</span></label>
+                <select class="form-select w-full rounded" formControlName="classRankId">
+                    <option value="">Select Rank</option>
+                    <option *ngFor="let rk of availableRanks" [value]="rk.id">
+                        {{rk.code}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Selected Subjects:</label>
+                <label *ngFor="let subject of allSubjects" class="checkbox-item">
+                    <div class="form-checkbox">
+                        <input type="checkbox" [checked]="isSubjectSelected(subject.id!)"
+                            (change)="onSubjectChange(subject! , $event)" [disabled]="!isEdit">
+                        <p>{{ subject.code | subjectCodeTransform }} ({{subject.code}})</p>
+                    </div>
+                </label>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" *ngIf="isEdit" class="btn-primary" (click)="save(category)"
+                    [disabled]="categoryForm.invalid">
+                    Update
+                </button>
+                <button type="button" *ngIf="isEdit" class="btn-primary" (click)="deleteCategory(category)">
+                    Delete
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>

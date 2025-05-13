@@ -59,7 +59,7 @@ export class AddClassComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _alertService: AlertService,
-    private _classCategoryService: ClassCategoryService,
+    private _categoryService: ClassCategoryService,
     private _subjectService: SubjectService
   ) {
     this.initializeForm();
@@ -189,7 +189,7 @@ export class AddClassComponent implements OnInit {
   }
 
   createCategory(request: classCategoryRequest): void {
-    this._classCategoryService.create(request).subscribe({
+    this._categoryService.create(request).subscribe({
       next: (res: boolean) => {
         if (res) {
           this._alertService.displayAlert('Successfully created category');
