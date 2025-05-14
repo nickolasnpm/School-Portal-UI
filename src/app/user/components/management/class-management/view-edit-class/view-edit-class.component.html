@@ -62,7 +62,7 @@
 
             <div class="modal-footer">
                 <button type="submit" *ngIf="isEdit" class="btn-primary" (click)="save(category)"
-                    [disabled]="categoryForm.invalid">
+                    [disabled]="categoryForm.invalid || areSubjectIdsEqual()">
                     Update
                 </button>
                 <button type="button" *ngIf="isEdit" class="btn-primary" (click)="deleteCategory(category)">

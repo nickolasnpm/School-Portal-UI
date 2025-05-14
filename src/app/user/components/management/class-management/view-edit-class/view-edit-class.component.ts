@@ -61,6 +61,7 @@ export class ViewEditClassComponent implements OnInit, OnChanges {
   allYears: number[] = GetYears.getYears();
   allSubjects: subjectResponse[] = [];
   checkedSubjects: subjectResponse[] = [];
+  originalSubjectIds: string[] = [];
   selectedSubjectIds: string[] = [];
 
   constructor(
@@ -112,14 +113,15 @@ export class ViewEditClassComponent implements OnInit, OnChanges {
         this.category?.subjects?.includes(s.name)
       );
 
-      const subjectIds = selectedSubjects.map((s) => s.id);
+      this.selectedSubjectIds = selectedSubjects.map((s) => s.id);
+      this.originalSubjectIds = [...this.selectedSubjectIds];
 
       this.categoryForm.patchValue({
         academicYear: this.category.academicYear,
         batchId: this.category.batchId,
         classRankId: this.category.classRankId,
         classStreamId: this.category.classStreamId,
-        subjectIds: subjectIds,
+        subjectIds: this.selectedSubjectIds,
       });
 
       // Disable all controls except subjectIds
@@ -247,6 +249,19 @@ export class ViewEditClassComponent implements OnInit, OnChanges {
 
       this.close();
     }
+  }
+
+  areSubjectIdsEqual(): boolean {
+    if (this.originalSubjectIds.length !== this.selectedSubjectIds.length) {
+      return false;
+    }
+
+    const sortedOriginal = [...this.originalSubjectIds].sort();
+    const sortedSelected = [...this.selectedSubjectIds].sort();
+
+    return sortedOriginal.every(
+      (value, index) => value === sortedSelected[index]
+    );
   }
 
   updateCategory(id: string, request: classCategoryRequest): boolean {
