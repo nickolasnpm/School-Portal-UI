@@ -5,7 +5,6 @@ import { AddClassComponent } from './add-class/add-class.component';
 import { ViewEditClassComponent } from './view-edit-class/view-edit-class.component';
 import { StorageService } from '../../../../template/services/storage/storage.service';
 import { AlertService } from '../../../../template/services/alert/alert.service';
-import { UserService } from '../../../services/user/user.service';
 import { ClassCategoryService } from '../../../services/class-category/class-category.service';
 import { KeyConstant } from '../../../../template/helper/local-storage/key-constant';
 import { userResponse } from '../../../models/User';
@@ -26,7 +25,7 @@ import { classRankResponse } from '../../../models/ClassRank';
     AddClassComponent,
     ViewEditClassComponent,
   ],
-  providers: [StorageService, AlertService, UserService, ClassCategoryService],
+  providers: [StorageService, AlertService, ClassCategoryService],
   templateUrl: './class-management.component.html',
   styleUrl: './class-management.component.css',
 })
@@ -86,9 +85,7 @@ export class ClassManagementComponent implements OnInit {
       },
       error: (err) => {
         console.error(err.error);
-        this._alertService.displayAlert(
-          'Failed to load class class categories list'
-        );
+        this._alertService.displayAlert('Failed to load class categories list');
       },
     });
   }
@@ -148,16 +145,16 @@ export class ClassManagementComponent implements OnInit {
   }
 
   //#region popup
-  viewCategory(batch: classCategoryResponse) {
+  viewCategory(category: classCategoryResponse) {
     this.isEdit = false;
     this.showViewEditPopup = true;
-    this.selectedCategory = batch;
+    this.selectedCategory = category;
   }
 
-  editCategory(batch: classCategoryResponse) {
+  editCategory(category: classCategoryResponse) {
     this.isEdit = true;
     this.showViewEditPopup = true;
-    this.selectedCategory = batch;
+    this.selectedCategory = category;
   }
 
   addCategory() {

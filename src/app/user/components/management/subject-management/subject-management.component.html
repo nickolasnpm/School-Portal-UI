@@ -1,1 +1,80 @@
-<p>subject-management works!</p>
+<div class="container">
+    <h2 class="title">Subject Management</h2>
+    <div>
+        <button class="btn-add" (click)="addSubject()">Add Subject</button>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="number-column">#</th>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>Teacher</th>
+                    <th>Classes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let subject of allSubjects; let i = index">
+                    <td class="number-column">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                    <td class="name" (click)="viewSubject(subject)">{{ subject.name }}</td>
+                    <td class="code">{{ subject.code }}</td>
+                    <td class="teacher">{{ subject.teacherId ? loadTeacher(subject.teacherId) : 'N/A' }}</td>
+                    <td>
+                        <div class="child-container">
+                            <ng-container *ngFor="let cs of subject.classSubjects; let i = index; let last = last"
+                                class="role-badge">
+                                {{ cs.code }}<span *ngIf="!last">, </span>
+                            </ng-container>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn-edit" (click)="editSubject(subject)">Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <div class="pagination-container">
+                            <!-- Show items range -->
+                            <span class="pagination-info">
+                                Showing {{ getStartItem() }} to {{ getEndItem() }} of {{ allSubjects.length }}
+                                total
+                            </span>
+                            <button class="pagination-btn" (click)="changePage(currentPage - 1)"
+                                [disabled]="currentPage === 1">Previous</button>
+
+                            <span *ngFor="let page of getTotalPages()">
+                                <button class="pagination-btn" [class.active]="currentPage === page"
+                                    (click)="changePage(page)">
+                                    {{ page }}
+                                </button>
+                            </span>
+
+                            <button class="pagination-btn" (click)="changePage(currentPage + 1)"
+                                [disabled]="currentPage === totalPages">Next</button>
+
+                            <select class="pagination-select" (change)="changeItemsPerPage($event)">
+                                <option *ngFor="let option of itemsPerPageOptions" [value]="option"
+                                    [selected]="itemsPerPage === option">
+                                    {{ option }}
+                                </option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- <div *ngIf="showViewEditPopup">
+        <app-view-edit-class [isEdit]="isEdit" [isAdmin]="isAdmin" [subject]="selectedSubject"
+            [allSubjects]="allSubjects" [allBatches]="classBatches" [allRanks]="classRanks" [allStreams]="classStreams"
+            (popupForm)="closePopupForm()"></app-view-edit-class>
+    </div>
+    <div *ngIf="showAddPopup">
+        <app-add-class [isEdit]="isEdit" [allSubjects]="allSubjects" [allBatches]="classBatches" [allRanks]="classRanks"
+            [allStreams]="classStreams" (popupForm)="closePopupForm()"></app-add-class>
+    </div> -->
+</div>
