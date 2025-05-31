@@ -68,11 +68,10 @@
             </tfoot>
         </table>
     </div>
-    <!-- <div *ngIf="showViewEditPopup">
-        <app-view-edit-class [isEdit]="isEdit" [isAdmin]="isAdmin" [subject]="selectedSubject"
-            [allSubjects]="allSubjects" [allBatches]="classBatches" [allRanks]="classRanks" [allStreams]="classStreams"
-            (popupForm)="closePopupForm()"></app-view-edit-class>
-    </div> -->
+    <div *ngIf="showViewEditPopup">
+        <app-view-edit-subject [isEdit]="isEdit" [isAdmin]="isAdmin" [subject]="selectedSubject"
+            [allSubjects]="allSubjects" [allTeachers]="allTeachers" (popupForm)="closePopupForm()"></app-view-edit-subject>
+    </div>
     <div *ngIf="showAddPopup">
         <app-add-subject [isEdit]="isEdit" [allSubjects]="allSubjects" [allTeachers]="allTeachers"
             (popupForm)="closePopupForm()"></app-add-subject>
