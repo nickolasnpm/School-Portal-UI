@@ -16,11 +16,8 @@ import {
 } from '@angular/forms';
 import { AlertService } from '../../../../../template/services/alert/alert.service';
 import { BatchService } from '../../../../services/batch/batch.service';
-import { UserService } from '../../../../services/user/user.service';
 import { userResponse } from '../../../../models/User';
 import { batchRequest, batchResponse } from '../../../../models/Batch';
-import { ClassStreamService } from '../../../../services/class-stream/class-stream.service';
-import { ClassRankService } from '../../../../services/class-rank/class-rank.service';
 import { classStreamResponse } from '../../../../models/ClassStream';
 import { classRankResponse } from '../../../../models/ClassRank';
 
@@ -28,7 +25,7 @@ import { classRankResponse } from '../../../../models/ClassRank';
   selector: 'app-view-edit-batch',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  providers: [AlertService, BatchService, UserService],
+  providers: [AlertService, BatchService],
   templateUrl: './view-edit-batch.component.html',
   styleUrl: './view-edit-batch.component.css',
 })
@@ -45,23 +42,16 @@ export class ViewEditBatchComponent implements OnInit, OnChanges {
 
   batchForm!: FormGroup;
 
-  allStreams: classStreamResponse[] = [];
-  allRanks: classRankResponse[] = [];
-
   constructor(
     private fb: FormBuilder,
     private _alertService: AlertService,
-    private _batchService: BatchService,
-    private _rankService: ClassRankService,
-    private _streamService: ClassStreamService
+    private _batchService: BatchService
   ) {
     this.initializeForm();
   }
 
   ngOnInit(): void {
     this.updateForms();
-    this.loadStreams();
-    this.loadRanks();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -137,17 +127,28 @@ export class ViewEditBatchComponent implements OnInit, OnChanges {
   }
 
   verifyPossibleTeacher(teacherId: string): void {
-    const user = this.getTeacher(teacherId);
-    const teacher = user?.teacher;
+    if (
+      this.batchForm.get('name')?.valid &&
+      this.batchForm.get('code')?.valid
+    ) {
+      const user = this.getTeacher(teacherId);
+      const teacher = user?.teacher;
 
-    if (teacher && teacher.responsibilityType && teacher.responsibilityFocus) {
-      const proceed = confirm(
-        `This teacher ${user.fullName} is responsible to manage a ${teacher.responsibilityType} (${teacher.responsibilityFocus}). Do you still want to proceed?`
-      );
+      if (
+        teacher &&
+        teacher.responsibilityType &&
+        teacher.responsibilityFocus
+      ) {
+        const proceed = confirm(
+          `This teacher ${user.fullName} is responsible to manage a ${teacher.responsibilityType} (${teacher.responsibilityFocus}). Do you still want to proceed?`
+        );
 
-      if (!proceed) {
-        this.batchForm.get('teacherId')?.setValue('');
+        if (!proceed) {
+          this.batchForm.get('teacherId')?.setValue('');
+        }
       }
+    } else {
+      this._alertService.displayAlert('You have to select valid code and name before you can select responsible teacher');
     }
   }
 
@@ -170,34 +171,6 @@ export class ViewEditBatchComponent implements OnInit, OnChanges {
     }
 
     return undefined;
-  }
-
-  loadStreams() {
-    this._streamService.getAll(true).subscribe({
-      next: (res: classStreamResponse[]) => {
-        if (res) {
-          this.allStreams = res;
-        }
-      },
-      error: (err) => {
-        console.error(err.error);
-        this._alertService.displayAlert('Failed to load class stream list');
-      },
-    });
-  }
-
-  loadRanks() {
-    this._rankService.getAll(true).subscribe({
-      next: (res: classRankResponse[]) => {
-        if (res) {
-          this.allRanks = res;
-        }
-      },
-      error: (err) => {
-        console.error(err.error);
-        this._alertService.displayAlert('Failed to load class rank list');
-      },
-    });
   }
 
   getBatch(name: string): batchResponse | undefined {
