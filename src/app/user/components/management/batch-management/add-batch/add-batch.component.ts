@@ -10,8 +10,6 @@ import { AlertService } from '../../../../../template/services/alert/alert.servi
 import { BatchService } from '../../../../services/batch/batch.service';
 import { batchRequest, batchResponse } from '../../../../models/Batch';
 import { userResponse } from '../../../../models/User';
-import { classStreamResponse } from '../../../../models/ClassStream';
-import { classRankResponse } from '../../../../models/ClassRank';
 
 @Component({
   selector: 'app-add-batch',
