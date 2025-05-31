@@ -18,8 +18,6 @@ import { AlertService } from '../../../../../template/services/alert/alert.servi
 import { BatchService } from '../../../../services/batch/batch.service';
 import { userResponse } from '../../../../models/User';
 import { batchRequest, batchResponse } from '../../../../models/Batch';
-import { classStreamResponse } from '../../../../models/ClassStream';
-import { classRankResponse } from '../../../../models/ClassRank';
 
 @Component({
   selector: 'app-view-edit-batch',
@@ -168,18 +166,6 @@ export class ViewEditBatchComponent implements OnInit, OnChanges {
 
     if (teacher) {
       return teacher;
-    }
-
-    return undefined;
-  }
-
-  getBatch(name: string): batchResponse | undefined {
-    const batch = this.allBatches.find(
-      (ab) => ab.name.toLowerCase() === name.toLowerCase()
-    );
-
-    if (batch) {
-      return batch;
     }
 
     return undefined;

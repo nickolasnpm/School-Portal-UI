@@ -1,1 +1,69 @@
-<p>view-edit-subject works!</p>
+<div *ngIf="subject && isAdmin" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="title">{{ isEdit ? 'Edit Subject' : 'View Subject' }}</h2>
+            <button class="close-button" (click)="close()">×</button>
+        </div>
+
+        <form [formGroup]="subjectForm">
+
+            <div class="form-group">
+                <label class="form-label">Name <span> *</span></label>
+                <input type="text" id="name" name="name" formControlName="name" class="form-input w-full rounded"
+                    placeholder="Enter subject name" required
+                    [ngClass]="{'border-red-500': subjectForm.get('name')?.invalid && subjectForm.get('name')?.touched}">
+                <div *ngIf="subjectForm.get('name')?.touched">
+                    <small class="error-text" *ngIf="subjectForm.get('name')?.errors?.['required']">Subject name
+                        is required</small>
+                    <small class="error-text" *ngIf="subjectForm.get('name')?.errors?.['minlength']">Subject name must
+                        be at
+                        least 2 characters long</small>
+                    <small class="error-text" *ngIf="subjectForm.get('name')?.errors?.['nameExist']">Subject name
+                        already
+                        exist</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Code <span> *</span></label>
+                <input type="text" id="code" name="code" formControlName="code" class="form-input w-full rounded"
+                    placeholder="Enter subject code" required
+                    [ngClass]="{'border-red-500': subjectForm.get('code')?.invalid && subjectForm.get('code')?.touched}">
+                <div *ngIf="subjectForm.get('code')?.touched">
+                    <small class="error-text" *ngIf="subjectForm.get('code')?.errors?.['required']">Subject code
+                        is required</small>
+                    <small class="error-text" *ngIf="subjectForm.get('code')?.errors?.['minlength']">Subject code must
+                        be at
+                        least 2 characters long</small>
+                    <small class="error-text" *ngIf="subjectForm.get('code')?.errors?.['codeExist']">Subject code
+                        already
+                        exist</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Teacher</label>
+                <select formControlName="teacherId" class="form-select w-full rounded">
+                    <option value="">Select Teacher</option>
+                    <option *ngFor="let user of allTeachers" [value]="user.teacher?.id">
+                        {{user.fullName}}
+                    </option>
+                </select>
+                <div *ngIf="subjectForm.get('teacherId')?.touched">
+                    <small class="error-text" *ngIf="subjectForm.get('teacherId')?.errors?.['required']">Responsible
+                        teacher is required</small>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" *ngIf="isEdit" class="btn-primary" (click)="save(subject)"
+                    [disabled]="subjectForm.invalid">
+                    Update
+                </button>
+                <button type="button" *ngIf="isEdit" class="btn-primary" (click)="deleteSubject(subject)">
+                    Delete
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
